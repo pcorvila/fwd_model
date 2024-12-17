@@ -1,8 +1,10 @@
 function system_test_matlabpart(subjects_dir,subject,space,constr)
 
-addpath(genpath('/media/thecix/toolboxes/MATLAB_compat'))
-addpath(genpath('/media/thecix/toolboxes/RSN'))
-addpath(genpath('/media/thecix/toolboxes/spm12'))
+matlab_path = userpath;
+
+addpath(genpath(fullfile(matlab_path,'RSN')))
+addpath(genpath(fullfile(matlab_path,'MATLAB_compat')))
+addpath(genpath(fullfile(matlab_path,'spm12')))
 
 cfg=[];
   cfg.subjects_dir=subjects_dir;

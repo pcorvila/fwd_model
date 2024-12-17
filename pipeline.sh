@@ -11,9 +11,10 @@ export SUBJECT=MNI
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # recon-all
-export INPUT=/Users/pcorvilain/Documents/Source_localization/source_MRI/MNI/orig.nii
+export INPUT=/Users/pcorvilain/Documents/Source_localization/source_MRI/$SUBJECT/orig.mgz
 recon-all -all -i $INPUT -subjid $SUBJECT
-
+# if FOV > 256
+recon-all -all -cw256 -i $INPUT -subjid $SUBJECT
 
 
 # make head surfaces
@@ -44,11 +45,30 @@ mri_convert -it mgz -ot nii -i $SUBJECTS_DIR/$SUBJECT/mri/brain.mgz -o $SUBJECTS
 
 # creation of BEM
 mne_watershed_bem --subject $SUBJECT
-cp $SUBJECTS_DIR/$SUBJECT/bem/watershed/$SUBJECT_inner_skull_surface $SUBJECT/bem/inner_skull.surf
+cp $SUBJECTS_DIR/$SUBJECT/bem/watershed/${SUBJECT}_inner_skull_surface $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf
+# For BEM-3 only
+cp $SUBJECTS_DIR/$SUBJECT/bem/watershed/${SUBJECT}_outer_skull_surface $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf
+cp $SUBJECTS_DIR/$SUBJECT/bem/watershed/${SUBJECT}_outer_skin_surface $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf
 
-#mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4 --homog # BEM-1
-mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4 # BEM-3
+# convert surfaces to stl (for a blender visualisation)
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf  $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.stl
 
-## Deform subject to MNI and nake source space
-ln -s /Users/pcorvilain/Documents/Source_localization/Freesurfer_output/MNI ./
-$MATLAB_ROOT/matlab -nodisplay
+# BEM-1
+# mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4 --homog
+# BEM-3
+mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4
+
+## Deform subject to MNI (Matlab)
+ln -s $SUBJECTS_DIR/MNI ./
+export SCRIPTS=/Users/pcorvilain/Documents/Source_localization/scripts
+export SOURCESPACE_TYPE=volume # volume or cortex
+
+$MATLAB_ROOT/matlab -nodisplay -r  "cd '${SCRIPTS}'; MNIdeformation_matlabpart('$SUBJECTS_DIR','$SUBJECT',5,'$SOURCESPACE_TYPE'); exit"
+
+
+# define voxel size in mm
+export SPACE=5
+# create source space
+mne_volume_source_space --surf $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf --pos $SUBJECTS_DIR/$SUBJECT/bem/${SUBJECT}_from_MNI-${SOURCESPACE_TYPE}-${SPACE}.pnt --src $SUBJECTS_DIR/${SUBJECT}/bem/${SUBJECT}_from_MNI-${SOURCESPACE_TYPE}-${SPACE}-src.fif
