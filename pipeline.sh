@@ -5,13 +5,13 @@ export FREESURFER_HOME=/Applications/freesurfer/7.4.1
 # define subjects dir
 export SUBJECTS_DIR=/Users/pcorvilain/Documents/Source_localization/Freesurfer_output
 # define subject
-export SUBJECT=MNI
+export SUBJECT=
 
 # source Freesurfer
 source $FREESURFER_HOME/SetUpFreeSurfer.sh
 
 # recon-all
-export INPUT=/Users/pcorvilain/Documents/Source_localization/source_MRI/$SUBJECT/orig.mgz
+export INPUT=/Users/pcorvilain/Documents/Source_localization/templates/Chen_et_al_2022-UNC-BCP_v2.0.0/04Month/BCP-04M-T1.nii.gz
 recon-all -all -i $INPUT -subjid $SUBJECT
 # if FOV > 256
 recon-all -all -cw256 -i $INPUT -subjid $SUBJECT
@@ -60,8 +60,9 @@ mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf  $SUBJECTS_DIR/$SUBJECT
 # BEM-3
 mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4
 
+# stop here
 ## Deform subject to MNI (Matlab)
-ln -s $SUBJECTS_DIR/MNI ./
+#ln -s $SUBJECTS_DIR/MNI ./
 export SCRIPTS=/Users/pcorvilain/Documents/Source_localization/scripts
 export SOURCESPACE_TYPE=volume # volume or cortex
 
