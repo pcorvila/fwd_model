@@ -2,13 +2,15 @@
 
 # setup
 export FREESURFER_HOME=/Applications/freesurfer/7.4.1
+# source Freesurfer
+source $FREESURFER_HOME/SetUpFreeSurfer.sh
+
 # define subjects dir
 export SUBJECTS_DIR=/Users/pcorvilain/Documents/Source_localization/Freesurfer_output
 # define subject
 export SUBJECT=
 
-# source Freesurfer
-source $FREESURFER_HOME/SetUpFreeSurfer.sh
+
 
 # recon-all
 export INPUT=/Users/pcorvilain/Documents/Source_localization/templates/Chen_et_al_2022-UNC-BCP_v2.0.0/04Month/BCP-04M-T1.nii.gz
