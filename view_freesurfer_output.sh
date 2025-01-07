@@ -10,12 +10,11 @@ export SUBJECTS_DIR=/Users/pcorvilain/Documents/Source_localization/Freesurfer_o
 # define subject
 export SUBJECT=MNI_5-8_months
 
-freeview -v \
-$SUBJECTS_DIR/$SUBJECT/mri/orig.mgz \
+freeview -v $SUBJECTS_DIR/$SUBJECT/mri/orig.mgz \
 -f $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf \
--f $SUBJECTS_DIR/$SUBJECT/bem/brain.surf \
--f $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf \
--f $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf
+$SUBJECTS_DIR/$SUBJECT/bem/brain.surf \
+$SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf \
+$SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf
 
 cd $SUBJECTS_DIR/$SUBJECT
 freeview -v mri/brainmask.mgz \
