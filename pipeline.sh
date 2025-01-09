@@ -22,7 +22,7 @@ mris_convert  $SUBJECTS_DIR/$SUBJECT/surf/lh.seghead  $SUBJECTS_DIR/$SUBJECT/sur
 
 ## MNE ##
 # setup
-export MNE_ROOT=/Users/pcorvilain/Documents/MNE-2.7.4-3420-MacOSX-x86_64
+export MNE_ROOT=/Applications/MNE-2.7.4-3420-MacOSX-x86_64
 export MATLAB_ROOT=/Applications/MATLAB_R2024b.app/bin
 emulate sh -c 'source $MNE_ROOT/bin/mne_setup_sh'
 

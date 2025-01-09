@@ -22,5 +22,5 @@ for FILE in "${files[@]}"
 do
   echo " "
   echo "Processing $FILE"
-  mri_convert -i ${FILE}/${FILE}.mgz --conform_size 1 --out_orientation PSR -ot spm -o ${FILE}/${FILE}.img
+  mri_convert -i ${FILE}.mgz --conform_size 1 --out_orientation PSR -ot spm -o ${FILE}.img
 done
