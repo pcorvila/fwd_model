@@ -24,3 +24,5 @@ do
   echo "Processing $FILE"
   mri_convert -i ${FILE}.mgz --conform_size 1 --out_orientation PSR -ot spm -o ${FILE}.img
 done
+
+mri_convert -i nu.mgz --conform_size 1 --out_orientation PSR -ot spm -o nu.img
