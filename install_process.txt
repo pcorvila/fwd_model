@@ -1,0 +1,25 @@
+Install process macOS
+
+Download and install all versions of Blender you want from https://www.blender.org/download/
+
+create alias for each version in your .zshrc file
+sudo nano ~/.zshrc
+
+alias blender-2.79='/Applications/Blender-2.79/blender.app/Contents/MacOS/Blender'
+alias blender-2.93='/Applications/Blender-2.93.app/Contents/MacOS/Blender'
+
+close and source the .zshrc file
+
+source ~/.zshrc
+
+Install the packages for python 3.9 of Blender 2.93
+
+/Applications/Blender-2.93.app/Contents/Resources/2.93/python/bin/python3.9 
+
+bpy.utils.user_resource("SCRIPTS", path="modules")
+
+'/Users/pcorvilain/Library/Application Support/Blender/2.93/scripts/modules'
+
+
+pip install scipy --target='/Users/pcorvilain/Library/Application Support/Blender/2.93/scripts/modules' 
+

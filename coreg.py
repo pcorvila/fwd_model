@@ -5,12 +5,10 @@ from pathlib import Path
 import sys
 import getopt
 
-
-def ckeck_args(argv):
-
+def check_args(argv):
     global scan_file_name, scale, mri_dir, scan_dir
     try:
-        opts, args = getopt.getopt(argv, 'he:s:', ["help", "mri_dir=", "scan_dir=", "ext=", "scale=", "sub="])
+        opts, args = getopt.getopt(argv, 'hs', ["help", "sub="])
     except getopt.GetoptError:
         print('wrong options, run -h or --help for help')
         sys.exit(2)
@@ -19,55 +17,39 @@ def ckeck_args(argv):
             print('\n\nOptions:\n'
                   '-h or --help\n'
                   '\tdisplay this help menu\n\n'
-                  '-e or --ext\n'
-                  '\tSet an extension to the name of the optic scan "Scan.stl"\n\n'
-                  '-s or --scale\n'
-                  '\tSet the global scale for importing the .stl files (default is 0.001)\n')
+                
+                  '-s or --sub\n'
+                  '\tDefine the subject to be co-registered\n')
             sys.exit()
-        elif opt == "--mri_dir":
-            mri_dir = arg
-            print('mri_dir set to: ', mri_dir)
-        elif opt == "--scan_dir":
-            scan_dir = arg
-            print('scan_dir set to: ', scan_dir)
-        elif opt in ("-e", "--ext"):
-            ext = arg
-            scan_file_name = 'Scan' + ext + '.stl'
-            print('Scan file name set to: ', scan_file_name)
-        elif opt == ("-s", "--scale"):
-            scale = float(arg)
-            print('global scale is set to: ', scale)
-
-
-scan_file_name = "Scan.stl"
-subfolder = ''
-scale = 0.001
+        elif opt == ("-s", "--sub"):
+            sub = arg
+            print('Subject is: ', sub)
 
 argv = sys.argv
 if '--' in argv:
     argv = argv[argv.index('--') + 1:]  # get all args after "--"
 else:
     argv = ''
-ckeck_args(argv)
+check_args(argv)
 
-if "mri_dir" not in globals():
-    print('Please specify your MRI directory')
+sub = 'MNI_05-08'
+
+if "sub" not in globals():
+    print('Please specify your subject')
     sys.exit(2)
-if "scan_dir" not in globals():
-    print('Please specify your scans directory')
-    sys.exit(2)
+
+SL_dir = '/Users/pcorvilain/Documents/Source_localization'
 
 # remove the cube
 bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
+
 print('Cube removed')
-print('Importing ' + scan_file_name + ',  scale = ' + str(scale))
 
-bpy.ops.import_mesh.stl(filepath=os.path.join(scan_dir, scan_file_name), global_scale=scale)
-# bpy.ops.import_mesh.stl(filepath=os.path.join(folder, scan_file_name))
+print('Importing MRI surfaces')
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead.stl"), global_scale=0.001)
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "outer_skin.stl"), global_scale=0.001)
 
-print('Importing IRM,  scale = ' + str(scale))
-bpy.ops.import_mesh.stl(filepath=os.path.join(mri_dir, "surf", "lh.seghead.stl"), global_scale=scale)
-# bpy.ops.import_mesh.stl(filepath=os.path.join(subjects_dir, subject, "surf", "lh.seghead.stl"))
-
+print('Importing Model.stl')
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Structure_scans", sub, "Model.stl"), global_scale=1)
 
 

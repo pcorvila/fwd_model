@@ -59,21 +59,4 @@ $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf \
 $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf \
 $SUBJECTS_DIR/$SUBJECT/bem/seghead.surf
 
-# BEM-1
-# mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4 --homog
-# BEM-3
-mne_setup_forward_model --subject ${SUBJECT} --surf --ico 4
-
-# stop here
-## Deform subject to MNI (Matlab)
-#ln -s $SUBJECTS_DIR/MNI ./
-export SCRIPTS=/Users/pcorvilain/Documents/Source_localization/scripts
-export SOURCESPACE_TYPE=volume # volume or cortex
-
-$MATLAB_ROOT/matlab -nodisplay -r  "cd '${SCRIPTS}'; MNIdeformation_matlabpart('$SUBJECTS_DIR','$SUBJECT',5,'$SOURCESPACE_TYPE'); exit"
-
-
-# define voxel size in mm
-export SPACE=5
-# create source space
-mne_volume_source_space --surf $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf --pos $SUBJECTS_DIR/$SUBJECT/bem/${SUBJECT}_from_MNI-${SOURCESPACE_TYPE}-${SPACE}.pnt --src $SUBJECTS_DIR/${SUBJECT}/bem/${SUBJECT}_from_MNI-${SOURCESPACE_TYPE}-${SPACE}-src.fif
+echo $SUBJECT

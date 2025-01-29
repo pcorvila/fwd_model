@@ -1,9 +1,14 @@
 import bpy
+import numpy as np
 import bmesh
-import os
+import mathutils
+import subprocess
 from pathlib import Path
+import os
 import sys
 import getopt
+import platform
+import webbrowser
 
 def check_args(argv):
     global scan_file_name, scale, mri_dir, scan_dir
@@ -38,7 +43,7 @@ if "sub" not in globals():
     print('Please specify your subject')
     sys.exit(2)
 
-SL_dir = '/Users/pcorvilain/Documents/Source_localization'
+SL_dir = "/Users/pcorvilain/Documents/Source_localization"
 
 # remove the cube
 bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
@@ -49,10 +54,25 @@ print('Importing MRI surfaces')
 bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead.stl"), global_scale=0.001)
 bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "outer_skin.stl"), global_scale=0.001)
 
-print('Importing Model.obj')
-# bpy.ops.wm.obj_import(filepath=os.path.join(SL_dir, "Structure_scans", sub, "Model.obj"), global_scale=1)
-bpy.ops.import_scene.obj(filepath=os.path.join(SL_dir, "Structure_scans", sub, "Model.obj"))
+file_transf = open(os.path.join(SL_dir, "Structure_scans", sub, "coreg.transform"), "r")
+lines_transf = file_transf.readlines()
+transf = np.empty((4, 4))
 
-# bpy.ops.import_mesh.stl(filepath=os.path.join(folder, scan_file_name))
+for i in range(4):
+    for j in range(3):
+        transf[i][j] = float(lines_transf[i].split(",")[j])
+    transf[i][3] = float(lines_transf[i].split(",")[3])  # /1000
+    # the factor 1000 is need if one used scale=1 in coreg.py
+transf[3][3] = 1
+
+matrix = mathutils.Matrix(transf)
 
 
+print('Importing Model.stl')
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Structure_scans", sub, "Model.stl"), global_scale=1)
+ob = bpy.context.object
+me = ob.data
+
+# transform the mesh with the matrix
+me.transform(matrix)
+me.update()
