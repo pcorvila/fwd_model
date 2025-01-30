@@ -1,27 +1,34 @@
 import numpy as np
 import os
-import bpy
+import mathutils
+
+# import bpy
 
 sub = 'MNI_05-08'
 SL_dir = "/Users/pcorvilain/Documents/Source_localization"
 
+# load positions
 fname = os.path.join(SL_dir, "Structure_scans", sub, "elecpos_mriframe.txt")
-
 positions = np.loadtxt(fname, delimiter=',')/1000
-# print(positions)
+print(positions)
+
+# load coreg matrix
+transf = np.loadtxt(os.path.join(SL_dir, "Structure_scans", sub, "coreg.transform"), delimiter=',')
+matrix = mathutils.Matrix(transf)
+
 
 # remove the cube
-bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
-print('Cube removed')
+# bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
+# print('Cube removed')
 
 # load mri
 
 
 # draw spheres at sensors locations
 for i in range(positions.shape[0]):
-    x, y, z = positions[i, :]
+    x, y, z = positions[i]
     r = 1
     # print(f"Drawing sphere at ({x}, {y}, {z}) with radius {r}")
-    bpy.ops.mesh.primitive_uv_sphere_add(radius=r, location=(x, y, z))
+    # bpy.ops.mesh.primitive_uv_sphere_add(radius=r, location=(x, y, z))
 
 

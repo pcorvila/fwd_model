@@ -47,8 +47,8 @@ SL_dir = "/Users/pcorvilain/Documents/Source_localization"
 
 # remove the cube
 bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
-
 print('Cube removed')
+
 
 print('Importing MRI surfaces')
 bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead.stl"), global_scale=0.001)
