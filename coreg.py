@@ -32,7 +32,8 @@ else:
     argv = ''
 check_args(argv)
 
-sub = 'MNI_05-08'
+# sub = 'MNI_05-08'
+sub = 'MNI_02-05'
 
 if "sub" not in globals():
     print('Please specify your subject')

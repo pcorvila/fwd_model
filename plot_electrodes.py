@@ -37,6 +37,10 @@ print('Importing seghead rescaled')
 bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead_rescaled.stl"), global_scale=0.001)
 ob = bpy.context.object
 
+print('Importing brain surface')
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "brain.stl"), global_scale=0.001)
+ob = bpy.context.object
+
 if bpy.data.collections.get("Electrodes"):
     vec_collection = bpy.data.collections["Electrodes"]
 else:

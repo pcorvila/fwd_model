@@ -7,6 +7,8 @@ source $FREESURFER_HOME/SetUpFreeSurfer.sh
 # define subjects dir
 export SUBJECTS_DIR=/Users/pcorvilain/Documents/Source_localization/Freesurfer_output
 # define subject
+export SUBJECT=MNI_02-05
+export SUBJECT=MNI_05-08
 export SUBJECT=MNI_08-11
 
 # recon-all
@@ -45,11 +47,15 @@ cp $SUBJECTS_DIR/$SUBJECT/surf/lh.seghead $SUBJECTS_DIR/$SUBJECT/bem/seghead.sur
 
 # convert surfaces to stl (for a blender visualisation)
 mkdir $SUBJECTS_DIR/$SUBJECT/bem/stl
-mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/brain.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/brain.stl
-mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/inner_skull.stl
-mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/outer_skull.stl
-mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/outer_skin.stl
-mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/seghead.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/seghead.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/brain.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_brain.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/inner_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_inner_skull.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skull.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_outer_skull.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/outer_skin.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_outer_skin.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/bem/seghead.surf  $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_seghead.stl
+
+# to get pial surfaces, recon-all with -pial (and steps before), then
+mris_convert  $SUBJECTS_DIR/$SUBJECT/surf/rh.pial $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_rh.stl
+mris_convert  $SUBJECTS_DIR/$SUBJECT/surf/rh.pial $SUBJECTS_DIR/$SUBJECT/bem/stl/${SUBJECT}_rh.stl
 
 # view output
 freeview -v $SUBJECTS_DIR/$SUBJECT/mri/orig.mgz \
