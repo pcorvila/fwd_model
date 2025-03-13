@@ -47,9 +47,9 @@ bpy.data.objects.remove(bpy.data.objects['Cube'], do_unlink=True)
 print('Cube removed')
 
 print('Importing MRI surface')
-bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead_rescaled.stl"), global_scale=0.001)
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "3D print", sub + ".stl"), global_scale=1)
 
 print('Importing scanned headshape')
-bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Structure_scans", sub, "headshape.stl"), global_scale=0.001)
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Structure_scans", sub, sub + ".stl"), global_scale=0.001)
 
 

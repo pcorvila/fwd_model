@@ -7,9 +7,9 @@ export SUBJECTS_DIR_FS=/Users/pcorvilain/Documents/Source_localization/Freesurfe
 export SUBJECT=MNI_05-08
 freeview -v ${SUBJECTS_DIR_FS}/${SUBJECT}/mri/nu.mgz \
 -f ${SUBJECTS_DIR_FS}${SUBJECT}/bem/outer_skin.surf:edgecolor=yellow \
-${SUBJECTS_DIR_FS}${SUBJECT}/bem/brain.surf:edgecolor=yellow \
-${SUBJECTS_DIR_FS}${SUBJECT}/bem/outer_skull.surf:edgecolor=yellow \
-${SUBJECTS_DIR_FS}${SUBJECT}/bem/inner_skull.surf:edgecolor=yellow
+${SUBJECTS_DIR_FS}${SUBJECT}/bem/outer_skull.surf:edgecolor=orange \
+${SUBJECTS_DIR_FS}${SUBJECT}/bem/inner_skull.surf:edgecolor=red \
+${SUBJECTS_DIR_FS}${SUBJECT}/bem/brain.surf:edgecolor=blue
 
 # compare outer_skin and seghead
 export SUBJECT=MNI_02-05

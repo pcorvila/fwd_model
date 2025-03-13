@@ -4,11 +4,11 @@ import bpy
 import bmesh
 import mathutils
 
-sub = 'MNI_05-08'
+sub = 'MNI_02-05'
 SL_dir = "/Users/pcorvilain/Documents/Source_localization"
 
 # load positions
-fname = os.path.join(SL_dir, "Structure_scans", sub, "elecpos_mriframe.txt")
+fname = os.path.join(SL_dir, "Structure_scans", sub, "elecpos_mriframe_7mm_inwards.txt")
 positions = np.loadtxt(fname, delimiter=',')/1000
 # print(positions)
 
@@ -34,11 +34,11 @@ chan_names = f.readlines()
 # me = ob.data
 
 print('Importing seghead rescaled')
-bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "seghead_rescaled.stl"), global_scale=0.001)
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", sub + "_seghead_rescaled.stl"), global_scale=0.001)
 ob = bpy.context.object
 
 print('Importing brain surface')
-bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", "brain.stl"), global_scale=0.001)
+bpy.ops.import_mesh.stl(filepath=os.path.join(SL_dir, "Freesurfer_output", sub, "bem", "stl", sub + "_brain.stl"), global_scale=0.001)
 ob = bpy.context.object
 
 if bpy.data.collections.get("Electrodes"):
